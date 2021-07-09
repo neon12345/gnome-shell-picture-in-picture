@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="gnome-shell-extensions">
-	<enum id="org.gnome.shell.extensions.window-corner-preview.BehaviorMode">
+	<enum id="org.gnome.shell.extensions.picture-in-picture.BehaviorMode">
 		<value value="0" nick="seethrough"/>
 		<value value="1" nick="autohide"/>
 		<value value="2" nick="jump-diagonally"/>
 		<value value="3" nick="jump-horizontally"/>
 		<value value="4" nick="jump-vertically"/>
 	</enum>
-    <enum id="org.gnome.shell.extensions.window-corner-preview.Corner">
+    <enum id="org.gnome.shell.extensions.picture-in-picture.Corner">
         <value value="0" nick="top-left"/>
         <value value="1" nick="top-right"/>
         <value value="2" nick="bottom-right"/>
         <value value="3" nick="bottom-left"/>
     </enum>
-	<schema path="/org/gnome/shell/extensions/window-corner-preview/" id="org.gnome.shell.extensions.window-corner-preview">
-		<key name="behavior-mode" enum="org.gnome.shell.extensions.window-corner-preview.BehaviorMode">
+	<schema path="/org/gnome/shell/extensions/picture-in-picture/" id="org.gnome.shell.extensions.picture-in-picture">
+		<key name="behavior-mode" enum="org.gnome.shell.extensions.picture-in-picture.BehaviorMode">
 			<default>"seethrough"</default>
 			<summary>Mouse over behavior</summary>
 			<description>Behavior when mouse is over the preview</description>
@@ -54,7 +54,7 @@
 			<summary>Initial Bottom Crop Ratio</summary>
 			<description>Initial Bottom Crop Ratio</description>
 		</key>
-        <key name="initial-corner" enum="org.gnome.shell.extensions.window-corner-preview.Corner">
+        <key name="initial-corner" enum="org.gnome.shell.extensions.picture-in-picture.Corner">
 			<default>"top-right"</default>
 			<summary>Initial Corner</summary>
 			<description>Initial Corner</description>

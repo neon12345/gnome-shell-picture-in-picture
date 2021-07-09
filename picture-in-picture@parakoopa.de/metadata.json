@@ -1,0 +1,13 @@
+{
+  "description": "Pin a video or any window to one corner of the screen in a small overlay.\nFork of Window Corner Preview",
+  "extension-id": "picture-in-picture",
+  "name": "Picture in Picture",
+  "settings-schema": "org.gnome.shell.extensions.picture-in-picture",
+  "gettext-domain": "gnome-shell-extensions",
+  "shell-version": [
+    "40.2"
+  ],
+  "url": "https://github.com/parakoopa/gome-shell-picture-in-picture",
+  "uuid": "picture-in-picture@parakoopa.de",
+  "version": 1
+}
