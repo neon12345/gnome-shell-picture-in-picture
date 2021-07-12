@@ -8,38 +8,41 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const Settings = Me.imports.settings;
 
-const WindowCornerSettings = Settings.WindowCornerSettings;
+const PictureInPictureSettings = Settings.PictureInPictureSettings;
 
 function init() {
     // Nothing
 }
 
-const WindowCornerPreviewPrefsWidget = new GObject.Class({
-    Name: "WindowCornerPreview.Prefs.Widget",
-    GTypeName: "WindowCornerPreviewPrefsWidget",
-    Extends: Gtk.VBox,
+const PictureInPicturePrefsWidget = new GObject.Class({
+    Name: "PictureInPicture.Prefs.Widget",
+    GTypeName: "PictureInPicturePrefsWidget",
+    Extends: Gtk.Box,
 
     _init: function(params) {
         this.parent(params);
 
         this.margin = 24;
         this.spacing = 6;
+        this.orientation = Gtk.Orientation.VERTICAL;
 
-        const settings = new WindowCornerSettings();
+        const settings = new PictureInPictureSettings();
 
         // 1. Behavior
 
-        this.add(new Gtk.Label({
+        /*
+        this.append(new Gtk.Label({
             label: "<b>Behavior when mouse is over (UNDER DEVELOPMENT)</b>",
             use_markup: true,
             xalign: 0.0,
             yalign: 0.0
         }));
 
-        let boxBehavior = new Gtk.VBox({
+        let boxBehavior = new Gtk.Box({
             spacing: 6,
             margin_top: 6,
-            margin_left: 12
+            margin_start: 12,
+            orientation: Gtk.Orientation.VERTICAL,
         });
 
 
@@ -60,7 +63,7 @@ const WindowCornerPreviewPrefsWidget = new GObject.Class({
 
         behaviors.forEach(function (behavior) {
 
-            radio = new Gtk.RadioButton({
+            radio = new Gtk.ToggleButton({
                 active: behavior.mode === currentBehaviorMode,
                 label: behavior.label,
                 group: radio,
@@ -73,11 +76,13 @@ const WindowCornerPreviewPrefsWidget = new GObject.Class({
                 }
             }));
 
-            boxBehavior.add(radio);
+            boxBehavior.append(radio);
         });
 
-        this.add(boxBehavior);
+        this.append(boxBehavior);
 
+         */
+        
         // 2. Hide on top
 
         let checkHideOnFocus = new Gtk.CheckButton({
@@ -89,16 +94,13 @@ const WindowCornerPreviewPrefsWidget = new GObject.Class({
             settings.focusHidden = button.active;
         });
 
-        let boxHideOnFocus = new Gtk.VBox({margin_top: 12});
+        let boxHideOnFocus = new Gtk.Box({margin_top: 12, orientation: Gtk.Orientation.VERTICAL});
 
-        boxHideOnFocus.add(checkHideOnFocus);
-        this.add(boxHideOnFocus);
+        boxHideOnFocus.append(checkHideOnFocus);
+        this.append(boxHideOnFocus);
     }
 });
 
 function buildPrefsWidget() {
-    let widget = new WindowCornerPreviewPrefsWidget();
-    widget.show_all();
-
-    return widget;
+    return new PictureInPicturePrefsWidget();
 }

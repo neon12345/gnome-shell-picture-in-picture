@@ -16,8 +16,9 @@ const normalizeRange = Bundle.normalizeRange;
 const deNormalizeRange = Bundle.deNormalizeRange;
 
 var PopupSliderMenuItem = new Lang.Class({
-    Name: "WindowCornerPreview.PopupSliderMenuItem",
+    Name: "PictureInPicture.PopupSliderMenuItem",
     Extends: PopupMenu.PopupBaseMenuItem,
+    Signals: { 'changed': {} },
 
     _init: function(text, value, min, max, step, params) {
 
@@ -37,26 +38,25 @@ var PopupSliderMenuItem = new Lang.Class({
             text: text || ""
         });
         // Setting text to false allow a little bit extra space on the left
-        if (text !== false) this.actor.add_child(this.label);
-        this.actor.label_actor = this.label;
+        if (text !== false) this.add_child(this.label);
 
-        this.slider = new Slider.Slider(0.0);
+        this.slider = new Slider.Slider({
+            value: 0.0,
+            x_expand: true, x_align: St.Align.END
+        });
         this.value = this.defaultValue;
 
         // PopupSliderMenuItem emits its own value-change event which provides a normalized value
-        this.slider.connect("value-changed", Lang.bind(this, function(x) {
+        this.slider.connect("notify::value", Lang.bind(this, function(x) {
             let normalValue = this.value;
             // Force the slider to set position on a stepped value (if necessary)
             if (this.step !== undefined) this.value = normalValue;
             // Don't through any event if step rounded it to the same value
-            if (normalValue !== this._lastValue) this.emit("value-changed", normalValue);
+            if (normalValue !== this._lastValue) this.emit('changed');
             this._lastValue = normalValue;
         }));
 
-        this.actor.add(this.slider.actor, {
-            expand: true,
-            align: St.Align.END
-        });
+        this.actor.add(this.slider);
     },
 
     get value() {
@@ -65,6 +65,6 @@ var PopupSliderMenuItem = new Lang.Class({
 
     set value(newValue) {
         this._lastValue = normalizeRange(newValue, this.min, this.max, this.step);
-        this.slider.setValue(this._lastValue);
+        this.slider.value = this._lastValue;
     }
 });

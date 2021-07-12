@@ -1,5 +1,5 @@
 {
-  "description": "Pin a video or any window to one corner of the screen in a small overlay.\nFork of Window Corner Preview",
+  "description": "Pin a video or any window to one corner of the screen in a small overlay.\nFork of Window Corner Preview for GNOME 40.",
   "extension-id": "picture-in-picture",
   "name": "Picture in Picture",
   "settings-schema": "org.gnome.shell.extensions.picture-in-picture",

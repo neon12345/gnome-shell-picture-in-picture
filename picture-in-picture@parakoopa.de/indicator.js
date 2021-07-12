@@ -28,11 +28,11 @@ const DEFAULT_CROP_RATIO = Preview.DEFAULT_CROP_RATIO;
 
 var WindowCornerIndicator = new Lang.Class({
 
-    Name: "WindowCornerPreview.indicator",
+    Name: "PictureInPicture.indicator",
     Extends: PanelMenu.Button,
 
     _init: function() {
-        this.parent(null, "WindowCornerPreview.indicator");
+        this.parent(null, "PictureInPicture.indicator");
     },
 
     // Handler to turn preview on / off
@@ -81,13 +81,13 @@ var WindowCornerIndicator = new Lang.Class({
     },
 
     _onSettings: function() {
-        Main.Util.trySpawnCommandLine("gnome-shell-extension-prefs window-corner-preview@fabiomereu.it");
+        Main.Util.trySpawnCommandLine("gnome-shell-extension-prefs picture-in-picture@parakoopa.de");
     },
 
     // Update windows list and other menus before menu pops up
     _onUserTriggered: function() {
         this.menuIsEnabled.setToggleState(this.preview.visible);
-        this.menuIsEnabled.actor.reactive = this.preview.window;
+        this.menuIsEnabled.reactive = this.preview.window;
         this._updateSliders()
         this.menuWindows.menu.removeAll();
         getWorkspaceWindowsArray().forEach(function(workspace, i) {
@@ -112,10 +112,10 @@ var WindowCornerIndicator = new Lang.Class({
 
         // Add icon
         this.icon = new St.Icon({
-            icon_name: "face-monkey-symbolic",
+            icon_name: "tv-symbolic",
             style_class: "system-status-icon"
         });
-        this.actor.add_actor(this.icon);
+        this.add_actor(this.icon);
 
         // Prepare Menu...
 
@@ -142,7 +142,7 @@ var WindowCornerIndicator = new Lang.Class({
 
         // 3b, Zoom slider
         this.menuZoom = new PopupSliderMenuItem(false, DEFAULT_ZOOM, MIN_ZOOM, MAX_ZOOM, 0.005); // slider step: 0.5%
-        this.menuZoom.connect("value-changed", Lang.bind(this, this._onZoomChanged));
+        this.menuZoom.connect("changed", () => {this._onZoomChanged(this.menuZoom, this.menuZoom.value);});
         this.menu.addMenuItem(this.menuZoom);
 
         // 4. Crop Sliders
@@ -150,19 +150,19 @@ var WindowCornerIndicator = new Lang.Class({
         this.menu.addMenuItem(this.menuCrop);
 
         this.menuTopCrop = new PopupSliderMenuItem("Top", DEFAULT_CROP_RATIO, 0.0, MAX_CROP_RATIO);
-        this.menuTopCrop.connect("value-changed", Lang.bind(this, this._onTopCropChanged));
+        this.menuTopCrop.connect("changed", () => {this._onTopCropChanged(this.menuTopCrop, this.menuTopCrop.value);});
         this.menuCrop.menu.addMenuItem(this.menuTopCrop);
 
         this.menuLeftCrop = new PopupSliderMenuItem("Left", DEFAULT_CROP_RATIO, 0.0, MAX_CROP_RATIO);
-        this.menuLeftCrop.connect("value-changed", Lang.bind(this, this._onLeftCropChanged));
+        this.menuLeftCrop.connect("changed", () => {this._onLeftCropChanged(this.menuLeftCrop, this.menuLeftCrop.value);});
         this.menuCrop.menu.addMenuItem(this.menuLeftCrop);
 
         this.menuRightCrop = new PopupSliderMenuItem("Right", DEFAULT_CROP_RATIO, 0.0, MAX_CROP_RATIO);
-        this.menuRightCrop.connect("value-changed", Lang.bind(this, this._onRightCropChanged));
+        this.menuRightCrop.connect("changed", () => {this._onRightCropChanged(this.menuRightCrop, this.menuRightCrop.value);});
         this.menuCrop.menu.addMenuItem(this.menuRightCrop);
 
         this.menuBottomCrop = new PopupSliderMenuItem("Bottom", DEFAULT_CROP_RATIO, 0.0, MAX_CROP_RATIO);
-        this.menuBottomCrop.connect("value-changed", Lang.bind(this, this._onBottomCropChanged));
+        this.menuBottomCrop.connect("changed", () => {this._onBottomCropChanged(this.menuBottomCrop, this.menuBottomCrop.value);});
         this.menuCrop.menu.addMenuItem(this.menuBottomCrop);
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
@@ -171,7 +171,7 @@ var WindowCornerIndicator = new Lang.Class({
         this.menuSettings.connect("activate", Lang.bind(this, this._onSettings));
         this.menu.addMenuItem(this.menuSettings);
 
-        this.actor.connect("enter-event", Lang.bind(this, this._onUserTriggered));
+        this.connect("enter-event", Lang.bind(this, this._onUserTriggered));
 
     },
 

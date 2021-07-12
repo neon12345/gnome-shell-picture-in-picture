@@ -1,20 +1,17 @@
 /*
-    Copyright (c) 2017 Fabius <fabio@mereu.info>
+    Copyright (c) 2021 Parakoopa <hello@parakoopa.de>
+    Copyright (c) 2017 Fabio Mereu <fabio@mereu.info>
+    Copyright (c) 2015 Benedict Aas
     Released under the MIT license
 
-    Window Corner Preview Gnome Extension
+    Picture in Picture Gnome Extension
 
     Purpose: It adds a menu to the GNOME main panel from which you can turn the
              preview of any desktop window on.
              It can help you watch a movie or a video while studying or working.
 
-    This is a fork of https://github.com/Exsul/float-youtube-for-gnome
-        by "Enelar" Kirill Berezin which was originally forked itself
-        from https://github.com/Shou/float-mpv by "Shou" Benedict Aas.
-
-    Contributors:
-        Scott Ames https://github.com/scottames
-        Jan Tojnar https://github.com/jtojnar
+    This is a fork of https://github.com/medenagan/window-corner-preview by Fabio Mereu.
+        See that repository for past forks and contributors.
 */
 
 "use strict";
@@ -34,9 +31,9 @@ const Signaling = Me.imports.signaling;
 const Bundle = Me.imports.bundle;
 const Polygnome = Me.imports.polygnome;
 
-const WindowCornerPreview = Preview.WindowCornerPreview;
+const PictureInPicture = Preview.PictureInPicture;
 const WindowCornerIndicator = Indicator.WindowCornerIndicator;
-const WindowCornerSettings = Settings.WindowCornerSettings;
+const PictureInPictureSettings = Settings.PictureInPictureSettings;
 const SignalConnector = Signaling.SignalConnector;
 
 const getWindowSignature = Bundle.getWindowSignature;
@@ -133,12 +130,12 @@ let preview, menu;
 let settings, signals;
 
 function init() {
-    settings = new WindowCornerSettings();
+    settings = new PictureInPictureSettings();
     signals = new SignalConnector();
 }
 
 function enable() {
-    preview = new WindowCornerPreview();
+    preview = new PictureInPicture();
     signals.tryConnect(settings, "changed", Lang.bind(preview, onSettingsChanged));
     signals.tryConnect(preview, "zoom-changed", Lang.bind(preview, onZoomChanged));
     signals.tryConnect(preview, "crop-changed", Lang.bind(preview, onCropChanged));

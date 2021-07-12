@@ -6,7 +6,7 @@ const Lang = imports.lang;
 // Helper to disconnect more signals at once
 var SignalConnector = new Lang.Class({
 
-    Name: "WindowCornerPreview.SignalConnector",
+    Name: "PictureInPicture.SignalConnector",
 
     _init: function() {
         this._connections = [];

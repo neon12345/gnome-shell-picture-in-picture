@@ -4,7 +4,7 @@
 const Lang = imports.lang;
 const Main = imports.ui.main;
 const St = imports.gi.St;
-const Tweener = imports.ui.tweener;
+const Tweener = imports.tweener.tweener;
 const Clutter = imports.gi.Clutter;
 const Signals = imports.signals;
 
@@ -57,9 +57,9 @@ const GDK_CONTROL_MASK = 4;
 const GDK_MOD1_MASK = 8;
 const GDK_ALT_MASK = GDK_MOD1_MASK; // Most cases
 
-var WindowCornerPreview = new Lang.Class({
+var PictureInPicture = new Lang.Class({
 
-    Name: "WindowCornerPreview.preview",
+    Name: "PictureInPicture.preview",
 
     _init: function() {
 
@@ -366,9 +366,7 @@ var WindowCornerPreview = new Lang.Class({
 
         if (! this._container) return;
 
-        this._container.foreach(function(actor) {
-            actor.destroy();
-        });
+        this._container.remove_all_children();
 
         if (! this._window) return;
 
@@ -377,7 +375,7 @@ var WindowCornerPreview = new Lang.Class({
         if (! mutw) return;
 
         let windowTexture = mutw.get_texture();
-        let [windowWidth, windowHeight] = windowTexture.get_size();
+        let [_, windowWidth, windowHeight] = windowTexture.get_preferred_size();
 
         /* To crop the window texture, for now I've found that:
            1. Using a clip rect on Clutter.clone will hide the outside portion but also will KEEP the space along it
@@ -421,7 +419,7 @@ var WindowCornerPreview = new Lang.Class({
         }
 
         let thumbnail = new Clutter.Clone({ // list parameters https://www.roojs.org/seed/gir-1.2-gtk-3.0/seed/Clutter.Clone.html
-            source: windowTexture,
+            source: mutw,
             reactive: false,
 
             magnification_filter: Clutter.ScalingFilter.NEAREST, //NEAREST, //TRILINEAR,
@@ -625,4 +623,4 @@ var WindowCornerPreview = new Lang.Class({
     }
 })
 
-Signals.addSignalMethods(WindowCornerPreview.prototype);
+Signals.addSignalMethods(PictureInPicture.prototype);

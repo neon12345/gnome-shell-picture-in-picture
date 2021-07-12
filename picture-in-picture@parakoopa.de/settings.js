@@ -20,9 +20,9 @@ var SETTING_INITIAL_BOTTOM_CROP = "initial-bottom-crop";
 var SETTING_INITIAL_CORNER = "initial-corner";
 var SETTING_LAST_WINDOW_HASH = "last-window-hash";
 
-var WindowCornerSettings = new Lang.Class({
+var PictureInPictureSettings = new Lang.Class({
 
-    Name: "WindowCornerPreview.settings",
+    Name: "PictureInPicture.settings",
 
     _init: function() {
         this._settings = Convenience.getSettings();
@@ -110,4 +110,4 @@ var WindowCornerSettings = new Lang.Class({
     }
 });
 
-Signals.addSignalMethods(WindowCornerSettings.prototype);
+Signals.addSignalMethods(PictureInPictureSettings.prototype);
