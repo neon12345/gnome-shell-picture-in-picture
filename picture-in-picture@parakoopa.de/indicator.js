@@ -1,7 +1,7 @@
 "use strict";
 
 // Global modules
-const Lang = imports.lang;
+const GObject = imports.gi.GObject;
 const St = imports.gi.St;
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
@@ -26,21 +26,20 @@ const MAX_CROP_RATIO = Preview.MAX_CROP_RATIO;
 const DEFAULT_ZOOM = Preview.DEFAULT_ZOOM;
 const DEFAULT_CROP_RATIO = Preview.DEFAULT_CROP_RATIO;
 
-var WindowCornerIndicator = new Lang.Class({
-
-    Name: "PictureInPicture.indicator",
-    Extends: PanelMenu.Button,
-
-    _init: function() {
-        this.parent(null, "PictureInPicture.indicator");
+var WindowCornerIndicator = GObject.registerClass({
+       GTypeName: 'PictureInPicture.indicator',
+   }, class PictureInPicture.indicator extends PanelMenu.Button {
+    
+    constructor() {
+        super(null, "PictureInPicture.indicator");
     },
 
     // Handler to turn preview on / off
-    _onMenuIsEnabled: function(item) {
+    _onMenuIsEnabled(item) {
         (item.state) ? this.preview.show() : this.preview.hide();
     },
 
-    _updateSliders: function() {
+    _updateSliders() {
         this.menuZoom.value = this.preview.zoom;
         this.menuZoomLabel.label.set_text("Monitor Zoom:  " + Math.floor(this.preview.zoom * 100).toString() + "%");
 
@@ -50,42 +49,42 @@ var WindowCornerIndicator = new Lang.Class({
         this.menuBottomCrop.value = this.preview.bottomCrop;
     },
 
-    _onZoomChanged: function(source, value) {
+    _onZoomChanged(source, value) {
         this.preview.zoom = value;
         this._updateSliders();
         this.preview.emit("zoom-changed");
     },
 
-    _onLeftCropChanged: function(source, value) {
+    _onLeftCropChanged(source, value) {
         this.preview.leftCrop = value;
         this._updateSliders();
         this.preview.emit("crop-changed");
     },
 
-    _onRightCropChanged: function(source, value) {
+    _onRightCropChanged(source, value) {
         this.preview.rightCrop = value;
         this._updateSliders();
         this.preview.emit("crop-changed");
     },
 
-    _onTopCropChanged: function(source, value) {
+    _onTopCropChanged(source, value) {
         this.preview.topCrop = value;
         this._updateSliders();
         this.preview.emit("crop-changed");
     },
 
-    _onBottomCropChanged: function(source, value) {
+    _onBottomCropChanged(source, value) {
         this.preview.bottomCrop = value;
         this._updateSliders();
         this.preview.emit("crop-changed");
     },
 
-    _onSettings: function() {
+    _onSettings() {
         Main.Util.trySpawnCommandLine("gnome-shell-extension-prefs picture-in-picture@parakoopa.de");
     },
 
     // Update windows list and other menus before menu pops up
-    _onUserTriggered: function() {
+    _onUserTriggered() {
         this.menuIsEnabled.setToggleState(this.preview.visible);
         this.menuIsEnabled.reactive = this.preview.window;
         this._updateSliders()
@@ -108,7 +107,7 @@ var WindowCornerIndicator = new Lang.Class({
         }, this);
     },
 
-    enable: function() {
+    enable() {
 
         // Add icon
         this.icon = new St.Icon({
@@ -175,7 +174,7 @@ var WindowCornerIndicator = new Lang.Class({
 
     },
 
-    disable: function() {
+    disable() {
         this.menu.removeAll();
     }
 });
