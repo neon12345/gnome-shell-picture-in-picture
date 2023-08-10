@@ -6,7 +6,6 @@ const Main = imports.ui.main;
 const St = imports.gi.St;
 const Tweener = imports.tweener.tweener;
 const Clutter = imports.gi.Clutter;
-const Signals = imports.signals;
 
 // Internal modules
 const ExtensionUtils = imports.misc.extensionUtils;
@@ -622,5 +621,3 @@ var PictureInPicture = GObject.registerClass({
         this._container = null;
     }
 })
-
-Signals.addSignalMethods(PictureInPicture.prototype);
