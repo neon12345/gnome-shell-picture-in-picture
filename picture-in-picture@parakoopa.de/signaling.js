@@ -5,8 +5,8 @@ const GObject = imports.gi.GObject;
 
 // Helper to disconnect more signals at once
 var SignalConnector = GObject.registerClass({
-       GTypeName: 'PictureInPicture.SignalConnector',
-   }, class SignalConnector extends GObject.Object {
+       GTypeName: 'PictureInPicture_SignalConnector',
+   }, class PictureInPicture_SignalConnector extends GObject.Object {
     
     constructor() {
         this._connections = [];
