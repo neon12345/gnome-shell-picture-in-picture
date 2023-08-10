@@ -1,9 +1,9 @@
 "use strict";
 
 // Global modules
-const Lang = imports.lang;
+const GObject = imports.gi.GObject;
 const St = imports.gi.St;
-const Main = imports.ui.main;
+const Util = imports.misc.util;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
@@ -26,21 +26,20 @@ const MAX_CROP_RATIO = Preview.MAX_CROP_RATIO;
 const DEFAULT_ZOOM = Preview.DEFAULT_ZOOM;
 const DEFAULT_CROP_RATIO = Preview.DEFAULT_CROP_RATIO;
 
-var WindowCornerIndicator = new Lang.Class({
-
-    Name: "PictureInPicture.indicator",
-    Extends: PanelMenu.Button,
-
-    _init: function() {
-        this.parent(null, "PictureInPicture.indicator");
-    },
+var WindowCornerIndicator = GObject.registerClass({
+       GTypeName: 'PictureInPicture_indicator',
+   }, class PictureInPicture_indicator extends PanelMenu.Button {
+    
+    constructor() {
+        super(null, "PictureInPicture_indicator");
+    }
 
     // Handler to turn preview on / off
-    _onMenuIsEnabled: function(item) {
+    _onMenuIsEnabled(item) {
         (item.state) ? this.preview.show() : this.preview.hide();
-    },
+    }
 
-    _updateSliders: function() {
+    _updateSliders() {
         this.menuZoom.value = this.preview.zoom;
         this.menuZoomLabel.label.set_text("Monitor Zoom:  " + Math.floor(this.preview.zoom * 100).toString() + "%");
 
@@ -48,44 +47,44 @@ var WindowCornerIndicator = new Lang.Class({
         this.menuRightCrop.value = this.preview.rightCrop;
         this.menuTopCrop.value = this.preview.topCrop;
         this.menuBottomCrop.value = this.preview.bottomCrop;
-    },
+    }
 
-    _onZoomChanged: function(source, value) {
+    _onZoomChanged(source, value) {
         this.preview.zoom = value;
         this._updateSliders();
         this.preview.emit("zoom-changed");
-    },
+    }
 
-    _onLeftCropChanged: function(source, value) {
+    _onLeftCropChanged(source, value) {
         this.preview.leftCrop = value;
         this._updateSliders();
         this.preview.emit("crop-changed");
-    },
+    }
 
-    _onRightCropChanged: function(source, value) {
+    _onRightCropChanged(source, value) {
         this.preview.rightCrop = value;
         this._updateSliders();
         this.preview.emit("crop-changed");
-    },
+    }
 
-    _onTopCropChanged: function(source, value) {
+    _onTopCropChanged(source, value) {
         this.preview.topCrop = value;
         this._updateSliders();
         this.preview.emit("crop-changed");
-    },
+    }
 
-    _onBottomCropChanged: function(source, value) {
+    _onBottomCropChanged(source, value) {
         this.preview.bottomCrop = value;
         this._updateSliders();
         this.preview.emit("crop-changed");
-    },
+    }
 
-    _onSettings: function() {
-        Main.Util.trySpawnCommandLine("gnome-shell-extension-prefs picture-in-picture@parakoopa.de");
-    },
+    _onSettings() {
+        Util.trySpawnCommandLine("gnome-shell-extension-prefs picture-in-picture@parakoopa.de");
+    }
 
     // Update windows list and other menus before menu pops up
-    _onUserTriggered: function() {
+    _onUserTriggered() {
         this.menuIsEnabled.setToggleState(this.preview.visible);
         this.menuIsEnabled.reactive = this.preview.window;
         this._updateSliders()
@@ -98,17 +97,17 @@ var WindowCornerIndicator = new Lang.Class({
             // Populate window list on submenu
             workspace.windows.forEach(function(window) {
                 let winMenuItem = new PopupMenu.PopupMenuItem(spliceTitle(window.get_title()));
-                winMenuItem.connect("activate", Lang.bind(this, function() {
+                winMenuItem.connect("activate", (function() {
                     this.preview.window = window;
                     this.preview.show();
-                }));
+                }).bind(this));
 
                 this.menuWindows.menu.addMenuItem(winMenuItem);
             }, this);
         }, this);
-    },
+    }
 
-    enable: function() {
+    enable() {
 
         // Add icon
         this.icon = new St.Icon({
@@ -124,7 +123,7 @@ var WindowCornerIndicator = new Lang.Class({
             hover: false,
             reactive: true
         });
-        this.menuIsEnabled.connect("toggled", Lang.bind(this, this._onMenuIsEnabled));
+        this.menuIsEnabled.connect("toggled", this._onMenuIsEnabled.bind(this));
         this.menu.addMenuItem(this.menuIsEnabled);
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
@@ -168,14 +167,14 @@ var WindowCornerIndicator = new Lang.Class({
 
         // 5. Settings
         this.menuSettings = new PopupMenu.PopupMenuItem("Settings");
-        this.menuSettings.connect("activate", Lang.bind(this, this._onSettings));
+        this.menuSettings.connect("activate", this._onSettings.bind(this));
         this.menu.addMenuItem(this.menuSettings);
 
-        this.connect("enter-event", Lang.bind(this, this._onUserTriggered));
+        this.connect("enter-event", this._onUserTriggered.bind(this));
 
-    },
+    }
 
-    disable: function() {
+    disable() {
         this.menu.removeAll();
     }
 });
