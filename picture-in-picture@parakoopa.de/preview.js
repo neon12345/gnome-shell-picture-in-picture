@@ -1,7 +1,7 @@
 "use strict";
 
 // Global modules
-const Lang = imports.lang;
+const GObject = imports.gi.GObject;
 const Main = imports.ui.main;
 const St = imports.gi.St;
 const Tweener = imports.tweener.tweener;
@@ -57,11 +57,11 @@ const GDK_CONTROL_MASK = 4;
 const GDK_MOD1_MASK = 8;
 const GDK_ALT_MASK = GDK_MOD1_MASK; // Most cases
 
-var PictureInPicture = new Lang.Class({
-
-    Name: "PictureInPicture.preview",
-
-    _init: function() {
+var PictureInPicture = GObject.registerClass({
+       GTypeName: 'PictureInPicture.preview',
+   }, class PictureInPicture.preview extends GObject.Object {
+    
+    constructor() {
 
         this._corner = DEFAULT_CORNER;
         this._zoom = DEFAULT_ZOOM;
@@ -84,7 +84,7 @@ var PictureInPicture = new Lang.Class({
         this._handleZoomChange = null;
     },
 
-    _onClick: function(actor, event) {
+    _onClick(actor, event) {
         let button = event.get_button();
         let state = event.get_state();
 
@@ -111,7 +111,7 @@ var PictureInPicture = new Lang.Class({
         }
     },
 
-    _onScroll: function(actor, event) {
+    _onScroll(actor, event) {
         let scroll_direction = event.get_scroll_direction();
 
         let direction;
@@ -198,7 +198,7 @@ var PictureInPicture = new Lang.Class({
         }
     },
 
-    _onEnter: function(actor, event) {
+    _onEnter(actor, event) {
         let [x, y, state] = global.get_pointer();
 
         // SHIFT: ignore standard behavior
@@ -213,7 +213,7 @@ var PictureInPicture = new Lang.Class({
         });
     },
 
-    _onLeave: function() {
+    _onLeave() {
         Tweener.addTween(this._container, {
             opacity: TWEEN_OPACITY_FULL,
             time: TWEEN_TIME_MEDIUM,
@@ -221,19 +221,19 @@ var PictureInPicture = new Lang.Class({
         });
     },
 
-    _onParamsChange: function() {
+    _onParamsChange() {
         // Zoom or crop properties changed
         if (this.enabled) this._setThumbnail();
     },
 
-    _onWindowUnmanaged: function() {
+    _onWindowUnmanaged() {
         this.disable();
         this._window = null;
         // gnome-shell --replace will cause this event too
         this.emit("window-changed", null);
     },
 
-    _adjustVisibility: function(options) {
+    _adjustVisibility(options) {
         options = options || {};
 
         /*
@@ -302,25 +302,25 @@ var PictureInPicture = new Lang.Class({
         }
     },
 
-    _onNotifyFocusWindow: function() {
+    _onNotifyFocusWindow() {
         this._adjustVisibility();
     },
 
-    _onOverviewShowing: function() {
+    _onOverviewShowing() {
         this._adjustVisibility();
     },
 
-    _onOverviewHiding: function() {
+    _onOverviewHiding() {
         this._adjustVisibility();
     },
 
-    _onMonitorsChanged: function() {
+    _onMonitorsChanged() {
         // TODO multiple monitors issue, the preview doesn't stick to the right monitor
         log("Monitors changed");
     },
 
     // Align the preview along the chrome area
-    _setPosition: function() {
+    _setPosition() {
 
         if (! this._container) {
             return;
@@ -362,7 +362,7 @@ var PictureInPicture = new Lang.Class({
     },
 
     // Create a window thumbnail and adds it to the container
-    _setThumbnail: function() {
+    _setThumbnail() {
 
         if (! this._container) return;
 
@@ -524,28 +524,28 @@ var PictureInPicture = new Lang.Class({
         return this._container && this._window && this._naturalVisibility;
     },
 
-    show: function(onComplete) {
+    show(onComplete) {
         this._naturalVisibility = true;
         this._adjustVisibility({
             onComplete: onComplete
         });
     },
 
-    hide: function(onComplete) {
+    hide(onComplete) {
         this._naturalVisibility = false;
         this._adjustVisibility({
             onComplete: onComplete
         });
     },
 
-    toggle: function(onComplete) {
+    toggle(onComplete) {
         this._naturalVisibility = !this._naturalVisibility;
         this._adjustVisibility({
             onComplete: onComplete
         });
     },
 
-    passAway: function() {
+    passAway() {
         this._naturalVisibility = false;
         this._adjustVisibility({
             onComplete: Lang.bind(this, this.disable)
@@ -577,7 +577,7 @@ var PictureInPicture = new Lang.Class({
         this.emit("window-changed", metawindow);
     },
 
-    enable: function() {
+    enable() {
 
         if (this._container) return;
 
@@ -610,7 +610,7 @@ var PictureInPicture = new Lang.Class({
         });
     },
 
-    disable: function() {
+    disable() {
 
         this._windowSignals.disconnectAll();
         this._environmentSignals.disconnectAll();
