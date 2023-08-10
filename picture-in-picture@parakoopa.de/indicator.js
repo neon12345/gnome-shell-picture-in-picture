@@ -97,10 +97,10 @@ var WindowCornerIndicator = GObject.registerClass({
             // Populate window list on submenu
             workspace.windows.forEach(function(window) {
                 let winMenuItem = new PopupMenu.PopupMenuItem(spliceTitle(window.get_title()));
-                winMenuItem.connect("activate", Lang.bind(this, function() {
+                winMenuItem.connect("activate", (function() {
                     this.preview.window = window;
                     this.preview.show();
-                }));
+                }).bind(this));
 
                 this.menuWindows.menu.addMenuItem(winMenuItem);
             }, this);
@@ -123,7 +123,7 @@ var WindowCornerIndicator = GObject.registerClass({
             hover: false,
             reactive: true
         });
-        this.menuIsEnabled.connect("toggled", Lang.bind(this, this._onMenuIsEnabled));
+        this.menuIsEnabled.connect("toggled", this._onMenuIsEnabled.bind(this));
         this.menu.addMenuItem(this.menuIsEnabled);
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
@@ -167,10 +167,10 @@ var WindowCornerIndicator = GObject.registerClass({
 
         // 5. Settings
         this.menuSettings = new PopupMenu.PopupMenuItem("Settings");
-        this.menuSettings.connect("activate", Lang.bind(this, this._onSettings));
+        this.menuSettings.connect("activate", this._onSettings.bind(this));
         this.menu.addMenuItem(this.menuSettings);
 
-        this.connect("enter-event", Lang.bind(this, this._onUserTriggered));
+        this.connect("enter-event", this._onUserTriggered.bind(this));
 
     }
 
