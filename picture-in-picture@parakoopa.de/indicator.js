@@ -28,16 +28,16 @@ const DEFAULT_CROP_RATIO = Preview.DEFAULT_CROP_RATIO;
 
 var WindowCornerIndicator = GObject.registerClass({
        GTypeName: 'PictureInPicture.indicator',
-   }, class PictureInPicture.indicator extends PanelMenu.Button {
+   }, class indicator extends PanelMenu.Button {
     
     constructor() {
         super(null, "PictureInPicture.indicator");
-    },
+    }
 
     // Handler to turn preview on / off
     _onMenuIsEnabled(item) {
         (item.state) ? this.preview.show() : this.preview.hide();
-    },
+    }
 
     _updateSliders() {
         this.menuZoom.value = this.preview.zoom;
@@ -47,41 +47,41 @@ var WindowCornerIndicator = GObject.registerClass({
         this.menuRightCrop.value = this.preview.rightCrop;
         this.menuTopCrop.value = this.preview.topCrop;
         this.menuBottomCrop.value = this.preview.bottomCrop;
-    },
+    }
 
     _onZoomChanged(source, value) {
         this.preview.zoom = value;
         this._updateSliders();
         this.preview.emit("zoom-changed");
-    },
+    }
 
     _onLeftCropChanged(source, value) {
         this.preview.leftCrop = value;
         this._updateSliders();
         this.preview.emit("crop-changed");
-    },
+    }
 
     _onRightCropChanged(source, value) {
         this.preview.rightCrop = value;
         this._updateSliders();
         this.preview.emit("crop-changed");
-    },
+    }
 
     _onTopCropChanged(source, value) {
         this.preview.topCrop = value;
         this._updateSliders();
         this.preview.emit("crop-changed");
-    },
+    }
 
     _onBottomCropChanged(source, value) {
         this.preview.bottomCrop = value;
         this._updateSliders();
         this.preview.emit("crop-changed");
-    },
+    }
 
     _onSettings() {
         Main.Util.trySpawnCommandLine("gnome-shell-extension-prefs picture-in-picture@parakoopa.de");
-    },
+    }
 
     // Update windows list and other menus before menu pops up
     _onUserTriggered() {
@@ -105,7 +105,7 @@ var WindowCornerIndicator = GObject.registerClass({
                 this.menuWindows.menu.addMenuItem(winMenuItem);
             }, this);
         }, this);
-    },
+    }
 
     enable() {
 
@@ -172,7 +172,7 @@ var WindowCornerIndicator = GObject.registerClass({
 
         this.connect("enter-event", Lang.bind(this, this._onUserTriggered));
 
-    },
+    }
 
     disable() {
         this.menu.removeAll();
