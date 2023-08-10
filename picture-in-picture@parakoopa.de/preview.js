@@ -59,7 +59,7 @@ const GDK_ALT_MASK = GDK_MOD1_MASK; // Most cases
 
 var PictureInPicture = GObject.registerClass({
        GTypeName: 'PictureInPicture.preview',
-   }, class PictureInPicture.preview extends GObject.Object {
+   }, class preview extends GObject.Object {
     
     constructor() {
 
@@ -82,7 +82,7 @@ var PictureInPicture = GObject.registerClass({
         this._environmentSignals = new SignalConnector();
 
         this._handleZoomChange = null;
-    },
+    }
 
     _onClick(actor, event) {
         let button = event.get_button();
@@ -109,7 +109,7 @@ var PictureInPicture = GObject.registerClass({
             }
             this.emit("corner-changed");
         }
-    },
+    }
 
     _onScroll(actor, event) {
         let scroll_direction = event.get_scroll_direction();
@@ -196,7 +196,7 @@ var PictureInPicture = GObject.registerClass({
             this[deltaMinimum.property] += deltaMinimum.direction * SCROLL_CROP_STEP;
             this.emit("crop-changed");
         }
-    },
+    }
 
     _onEnter(actor, event) {
         let [x, y, state] = global.get_pointer();
@@ -211,7 +211,7 @@ var PictureInPicture = GObject.registerClass({
             time: TWEEN_TIME_MEDIUM,
             transition: "easeOutQuad"
         });
-    },
+    }
 
     _onLeave() {
         Tweener.addTween(this._container, {
@@ -219,19 +219,19 @@ var PictureInPicture = GObject.registerClass({
             time: TWEEN_TIME_MEDIUM,
             transition: "easeOutQuad"
         });
-    },
+    }
 
     _onParamsChange() {
         // Zoom or crop properties changed
         if (this.enabled) this._setThumbnail();
-    },
+    }
 
     _onWindowUnmanaged() {
         this.disable();
         this._window = null;
         // gnome-shell --replace will cause this event too
         this.emit("window-changed", null);
-    },
+    }
 
     _adjustVisibility(options) {
         options = options || {};
@@ -300,24 +300,24 @@ var PictureInPicture = GObject.registerClass({
                 })
             });
         }
-    },
+    }
 
     _onNotifyFocusWindow() {
         this._adjustVisibility();
-    },
+    }
 
     _onOverviewShowing() {
         this._adjustVisibility();
-    },
+    }
 
     _onOverviewHiding() {
         this._adjustVisibility();
-    },
+    }
 
     _onMonitorsChanged() {
         // TODO multiple monitors issue, the preview doesn't stick to the right monitor
         log("Monitors changed");
-    },
+    }
 
     // Align the preview along the chrome area
     _setPosition() {
@@ -359,7 +359,7 @@ var PictureInPicture = GObject.registerClass({
                 posY = rectChrome.y1;
         }
         this._container.set_position(posX, posY);
-    },
+    }
 
     // Create a window thumbnail and adds it to the container
     _setThumbnail() {
@@ -444,7 +444,7 @@ var PictureInPicture = GObject.registerClass({
         this._container.add_actor(thumbnail);
 
         this._setPosition();
-    },
+    }
 
     // xCrop properties normalize their opposite counterpart, so that margins won't ever overlap
     set leftCrop(value) {
@@ -453,108 +453,108 @@ var PictureInPicture = GObject.registerClass({
         // Decrease the opposite margin if necessary
         this._rightCrop = Math.min(this._rightCrop, MAX_CROP_RATIO - this._leftCrop);
         this._onParamsChange();
-    },
+    }
 
     set rightCrop(value) {
         this._rightCrop = Math.min(MAX_CROP_RATIO, Math.max(0.0, value));
         this._leftCrop = Math.min(this._leftCrop, MAX_CROP_RATIO - this._rightCrop);
         this._onParamsChange();
-    },
+    }
 
     set topCrop(value) {
         this._topCrop = Math.min(MAX_CROP_RATIO, Math.max(0.0, value));
         this._bottomCrop = Math.min(this._bottomCrop, MAX_CROP_RATIO - this._topCrop);
         this._onParamsChange();
-    },
+    }
 
     set bottomCrop(value) {
         this._bottomCrop = Math.min(MAX_CROP_RATIO, Math.max(0.0, value));
         this._topCrop = Math.min(this._topCrop, MAX_CROP_RATIO - this._bottomCrop);
         this._onParamsChange();
-    },
+    }
 
     get leftCrop() {
         return this._leftCrop;
-    },
+    }
 
     get rightCrop() {
         return this._rightCrop;
-    },
+    }
 
     get topCrop() {
         return this._topCrop;
-    },
+    }
 
     get bottomCrop() {
         return this._bottomCrop;
-    },
+    }
 
     set zoom(value) {
         this._zoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, value));
         this._onParamsChange();
-    },
+    }
 
     get zoom() {
         return this._zoom;
-    },
+    }
 
     set focusHidden(value) {
         this._focusHidden = !!value;
         this._adjustVisibility();
-    },
+    }
 
     get focusHidden() {
         return this._focusHidden;
-    },
+    }
 
     set corner(value) {
         this._corner = (value %= 4) < 0 ? (value + 4) : (value);
         this._setPosition();
-    },
+    }
 
     get corner() {
         return this._corner;
-    },
+    }
 
     get enabled() {
         return !!this._container;
-    },
+    }
 
     get visible() {
         return this._container && this._window && this._naturalVisibility;
-    },
+    }
 
     show(onComplete) {
         this._naturalVisibility = true;
         this._adjustVisibility({
             onComplete: onComplete
         });
-    },
+    }
 
     hide(onComplete) {
         this._naturalVisibility = false;
         this._adjustVisibility({
             onComplete: onComplete
         });
-    },
+    }
 
     toggle(onComplete) {
         this._naturalVisibility = !this._naturalVisibility;
         this._adjustVisibility({
             onComplete: onComplete
         });
-    },
+    }
 
     passAway() {
         this._naturalVisibility = false;
         this._adjustVisibility({
             onComplete: Lang.bind(this, this.disable)
         });
-    },
+    }
 
     get window() {
         return this._window;
-    },
+    }
 
     set window(metawindow) {
 
@@ -575,7 +575,7 @@ var PictureInPicture = GObject.registerClass({
         this._setThumbnail();
 
         this.emit("window-changed", metawindow);
-    },
+    }
 
     enable() {
 
@@ -608,7 +608,7 @@ var PictureInPicture = GObject.registerClass({
         this._adjustVisibility({
             noAnimate: isSwitchingWindow
         });
-    },
+    }
 
     disable() {
 
