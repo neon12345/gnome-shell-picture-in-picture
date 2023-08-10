@@ -26,7 +26,7 @@ var PictureInPictureSettings = GObject.registerClass({
     constructor() {
         super();
         this._settings = Convenience.getSettings();
-        this._settings.connect("changed", Lang.bind(this, this._onChanged));
+        this._settings.connect("changed", this._onChanged.bind(this));
     }
 
     _onChanged(settings, key) {
