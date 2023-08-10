@@ -3,7 +3,7 @@
 // Global modules
 const GObject = imports.gi.GObject;
 const St = imports.gi.St;
-const Main = imports.ui.main;
+const Util = imports.misc.util;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
@@ -80,7 +80,7 @@ var WindowCornerIndicator = GObject.registerClass({
     }
 
     _onSettings() {
-        Main.Util.trySpawnCommandLine("gnome-shell-extension-prefs picture-in-picture@parakoopa.de");
+        Util.trySpawnCommandLine("gnome-shell-extension-prefs picture-in-picture@parakoopa.de");
     }
 
     // Update windows list and other menus before menu pops up
