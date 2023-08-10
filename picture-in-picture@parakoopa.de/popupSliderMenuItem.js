@@ -16,9 +16,9 @@ const normalizeRange = Bundle.normalizeRange;
 const deNormalizeRange = Bundle.deNormalizeRange;
 
 var PopupSliderMenuItem = GObject.registerClass({
-       GTypeName: 'PictureInPicture.PopupSliderMenuItem',
+       GTypeName: 'PictureInPicture_PopupSliderMenuItem',
        Signals: { 'changed': {} },
-   }, class PopupSliderMenuItem extends PopupMenu.PopupBaseMenuItem {
+   }, class PictureInPicture_PopupSliderMenuItem extends PopupMenu.PopupBaseMenuItem {
     
     constructor(text, value, min, max, step, params) {
 
