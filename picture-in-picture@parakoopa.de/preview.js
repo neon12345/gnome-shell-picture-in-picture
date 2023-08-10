@@ -57,7 +57,13 @@ const GDK_MOD1_MASK = 8;
 const GDK_ALT_MASK = GDK_MOD1_MASK; // Most cases
 
 var PictureInPicture = GObject.registerClass({
-       GTypeName: 'PictureInPicture_preview',
+       GTypeName: 'PictureInPicture_preview',    
+       Signals: {
+              'zoom-changed': {},
+              'crop-changed': {},
+              'corner-changed': {},
+              'window-changed': {},
+       },
    }, class PictureInPicture_preview extends GObject.Object {
     
     constructor() {
