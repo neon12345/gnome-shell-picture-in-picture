@@ -21,8 +21,8 @@ var SETTING_INITIAL_CORNER = "initial-corner";
 var SETTING_LAST_WINDOW_HASH = "last-window-hash";
 
 var PictureInPictureSettings = GObject.registerClass({
-       GTypeName: 'PictureInPicture.settings',
-   }, class settings extends GObject.Object {
+       GTypeName: 'PictureInPicture_settings',
+   }, class settings PictureInPicture_settings GObject.Object {
     
     constructor() {
         this._settings = Convenience.getSettings();
