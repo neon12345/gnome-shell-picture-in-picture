@@ -18,7 +18,7 @@ const deNormalizeRange = Bundle.deNormalizeRange;
 var PopupSliderMenuItem = GObject.registerClass({
        GTypeName: 'PictureInPicture.PopupSliderMenuItem',
        Signals: { 'changed': {} },
-   }, class PictureInPicture.PopupSliderMenuItem extends PopupMenu.PopupBaseMenuItem {
+   }, class PopupSliderMenuItem extends PopupMenu.PopupBaseMenuItem {
     
     constructor(text, value, min, max, step, params) {
 
@@ -57,11 +57,11 @@ var PopupSliderMenuItem = GObject.registerClass({
         }));
 
         this.actor.add(this.slider);
-    },
+    }
 
     get value() {
         return deNormalizeRange(this.slider.value, this.min, this.max, this.step);
-    },
+    }
 
     set value(newValue) {
         this._lastValue = normalizeRange(newValue, this.min, this.max, this.step);
