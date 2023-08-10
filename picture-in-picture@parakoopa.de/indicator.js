@@ -27,8 +27,8 @@ const DEFAULT_ZOOM = Preview.DEFAULT_ZOOM;
 const DEFAULT_CROP_RATIO = Preview.DEFAULT_CROP_RATIO;
 
 var WindowCornerIndicator = GObject.registerClass({
-       GTypeName: 'PictureInPicture.indicator',
-   }, class indicator extends PanelMenu.Button {
+       GTypeName: 'PictureInPicture_indicator',
+   }, class PictureInPicture_indicator extends PanelMenu.Button {
     
     constructor() {
         super(null, "PictureInPicture.indicator");
