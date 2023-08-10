@@ -1,7 +1,7 @@
 "use strict";
 
-// Global modules
-const Lang = imports.lang;
+// Global modules 
+const GObject = imports.gi.GObject;
 const St = imports.gi.St;
 const Slider = imports.ui.slider;
 const PopupMenu = imports.ui.popupMenu;
@@ -15,12 +15,12 @@ const Bundle = Me.imports.bundle;
 const normalizeRange = Bundle.normalizeRange;
 const deNormalizeRange = Bundle.deNormalizeRange;
 
-var PopupSliderMenuItem = new Lang.Class({
-    Name: "PictureInPicture.PopupSliderMenuItem",
-    Extends: PopupMenu.PopupBaseMenuItem,
-    Signals: { 'changed': {} },
-
-    _init: function(text, value, min, max, step, params) {
+var PopupSliderMenuItem = GObject.registerClass({
+       GTypeName: 'PictureInPicture.PopupSliderMenuItem',
+       Signals: { 'changed': {} },
+   }, class PictureInPicture.PopupSliderMenuItem extends PopupMenu.PopupBaseMenuItem {
+    
+    constructor(text, value, min, max, step, params) {
 
         this.min = (min !== undefined ? min : 0.0);
         this.max = (max !== undefined ? max : 1.0);
@@ -32,7 +32,7 @@ var PopupSliderMenuItem = new Lang.Class({
 
         params.activate = false;
 
-        this.parent(params);
+        super(params);
 
         this.label = new St.Label({
             text: text || ""
