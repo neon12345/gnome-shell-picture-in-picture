@@ -1,18 +1,18 @@
 "use strict";
 
 // Global modules
-const Lang = imports.lang;
+const GObject = imports.gi.GObject;
 
 // Helper to disconnect more signals at once
-var SignalConnector = new Lang.Class({
-
-    Name: "PictureInPicture.SignalConnector",
-
-    _init: function() {
+var SignalConnector = GObject.registerClass({
+       GTypeName: 'PictureInPicture.SignalConnector',
+   }, class PictureInPicture.SignalConnector extends GObject.Object {
+    
+    constructor() {
         this._connections = [];
     },
 
-    tryConnect: function(actor, signal, callback) {
+    tryConnect(actor, signal, callback) {
         try {
             let handle = actor.connect(signal, callback);
             this._connections.push({
@@ -26,7 +26,7 @@ var SignalConnector = new Lang.Class({
         }
     },
 
-    tryConnectAfter: function(actor, signal, callback) {
+    tryConnectAfter(actor, signal, callback) {
         try {
             let handle = actor.connect_after(signal, callback);
             this._connections.push({
@@ -40,7 +40,7 @@ var SignalConnector = new Lang.Class({
         }
     },
 
-    disconnectAll: function() {
+    disconnectAll() {
         for (let i = 0; i < this._connections.length; i++) {
             try {
                 let connection = this._connections[i];
