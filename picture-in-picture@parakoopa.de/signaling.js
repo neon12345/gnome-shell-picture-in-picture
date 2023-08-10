@@ -6,11 +6,11 @@ const GObject = imports.gi.GObject;
 // Helper to disconnect more signals at once
 var SignalConnector = GObject.registerClass({
        GTypeName: 'PictureInPicture.SignalConnector',
-   }, class PictureInPicture.SignalConnector extends GObject.Object {
+   }, class SignalConnector extends GObject.Object {
     
     constructor() {
         this._connections = [];
-    },
+    }
 
     tryConnect(actor, signal, callback) {
         try {
@@ -24,7 +24,7 @@ var SignalConnector = GObject.registerClass({
         catch (e) {
             logError(e, "SignalConnector.tryConnect failed");
         }
-    },
+    }
 
     tryConnectAfter(actor, signal, callback) {
         try {
@@ -38,7 +38,7 @@ var SignalConnector = GObject.registerClass({
         catch (e) {
             logError(e, "SignalConnector.tryConnectAfter failed");
         }
-    },
+    }
 
     disconnectAll() {
         for (let i = 0; i < this._connections.length; i++) {
