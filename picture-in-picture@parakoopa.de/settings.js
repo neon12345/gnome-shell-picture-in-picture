@@ -21,6 +21,9 @@ var SETTING_LAST_WINDOW_HASH = "last-window-hash";
 
 var PictureInPictureSettings = GObject.registerClass({
        GTypeName: 'PictureInPicture_settings',
+       Signals: {
+              'changed': {},
+       },
    }, class PictureInPicture_settings extends GObject.Object {
     
     constructor() {
