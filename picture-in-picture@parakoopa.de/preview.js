@@ -292,11 +292,11 @@ var PictureInPicture = GObject.registerClass({
                 opacity: calculatedOpacity,
                 time: TWEEN_TIME_SHORT,
                 transition: "easeOutQuad",
-                onComplete: Lang.bind(this, function() {
+                onComplete: (function() {
                     this._container.visible = calculatedVisibility;
                     this._container.reactive = true;
                     if (options.onComplete) options.onComplete();
-                })
+                }).bind(this)
             });
         }
     }
@@ -547,7 +547,7 @@ var PictureInPicture = GObject.registerClass({
     passAway() {
         this._naturalVisibility = false;
         this._adjustVisibility({
-            onComplete: Lang.bind(this, this.disable)
+            onComplete: this.disable.bind(this)
         });
     }
 
@@ -564,11 +564,11 @@ var PictureInPicture = GObject.registerClass({
         this._window = metawindow;
 
         if (metawindow) {
-            this._windowSignals.tryConnect(metawindow, "unmanaged", Lang.bind(this, this._onWindowUnmanaged));
+            this._windowSignals.tryConnect(metawindow, "unmanaged", this.disable.bind(this));
             // Version 3.10 does not support size-changed
-            this._windowSignals.tryConnect(metawindow, "size-changed", Lang.bind(this, this._setThumbnail));
-            this._windowSignals.tryConnect(metawindow, "notify::maximized-vertically", Lang.bind(this, this._setThumbnail));
-            this._windowSignals.tryConnect(metawindow, "notify::maximized-horizontally", Lang.bind(this, this._setThumbnail));
+            this._windowSignals.tryConnect(metawindow, "size-changed", this._setThumbnail.bind(this));
+            this._windowSignals.tryConnect(metawindow, "notify::maximized-vertically", this._setThumbnail.bind(this));
+            this._windowSignals.tryConnect(metawindow, "notify::maximized-horizontally", this._setThumbnail.bind(this));
         }
 
         this._setThumbnail();
@@ -582,10 +582,10 @@ var PictureInPicture = GObject.registerClass({
 
         let isSwitchingWindow = this.enabled;
 
-        this._environmentSignals.tryConnect(Main.overview, "showing", Lang.bind(this, this._onOverviewShowing));
-        this._environmentSignals.tryConnect(Main.overview, "hiding", Lang.bind(this, this._onOverviewHiding));
-        this._environmentSignals.tryConnect(global.display, "notify::focus-window", Lang.bind(this, this._onNotifyFocusWindow));
-        this._environmentSignals.tryConnect(DisplayWrapper.getMonitorManager(), "monitors-changed", Lang.bind(this, this._onMonitorsChanged));
+        this._environmentSignals.tryConnect(Main.overview, "showing", this._onOverviewShowing.bind(this));
+        this._environmentSignals.tryConnect(Main.overview, "hiding", this._onOverviewHiding.bind(this));
+        this._environmentSignals.tryConnect(global.display, "notify::focus-window", this._onNotifyFocusWindow.bind(this));
+        this._environmentSignals.tryConnect(DisplayWrapper.getMonitorManager(), "monitors-changed", this._onMonitorsChanged.bind(this));
 
         this._container = new St.Button({
             style_class: "window-corner-preview"
@@ -593,11 +593,11 @@ var PictureInPicture = GObject.registerClass({
         // Force content not to overlap, allowing cropping
         this._container.set_clip_to_allocation(true);
 
-        this._container.connect("enter-event", Lang.bind(this, this._onEnter));
-        this._container.connect("leave-event", Lang.bind(this, this._onLeave));
+        this._container.connect("enter-event", this._onEnter.bind(this));
+        this._container.connect("leave-event", this._onLeave.bind(this));
         // Don't use button-press-event, as set_position conflicts and Gtk would react for enter and leave event of ANY item on the chrome area
-        this._container.connect("button-release-event", Lang.bind(this, this._onClick));
-        this._container.connect("scroll-event", Lang.bind(this, this._onScroll));
+        this._container.connect("button-release-event", this._onClick.bind(this));
+        this._container.connect("scroll-event", this._onScroll.bind(this));
 
         this._container.visible = false;
         Main.layoutManager.addChrome(this._container);
