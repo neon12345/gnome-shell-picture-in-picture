@@ -2,7 +2,6 @@
 
 // Global modules
 const GObject = imports.gi.GObject;
-const Signals = imports.signals;
 
 // Internal modules
 const ExtensionUtils = imports.misc.extensionUtils;
@@ -109,5 +108,3 @@ var PictureInPictureSettings = GObject.registerClass({
         this._settings.set_string(SETTING_LAST_WINDOW_HASH, value);
     }
 });
-
-Signals.addSignalMethods(PictureInPictureSettings.prototype);
