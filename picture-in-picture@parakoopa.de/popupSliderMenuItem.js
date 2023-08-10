@@ -22,17 +22,18 @@ var PopupSliderMenuItem = GObject.registerClass({
     
     constructor(text, value, min, max, step, params) {
 
+        params = params || {};
+
+        params.activate = false;
+
+        super(params);
+           
         this.min = (min !== undefined ? min : 0.0);
         this.max = (max !== undefined ? max : 1.0);
         this.defaultValue = (value !== undefined ? value : (this.max + this.min) / 2.0);
         // *** KNOWN ISSUE: Scrolling may get stucked if step value > 1.0 (and |min-max| is a low value)
         // due to const SLIDER_SCROLL_STEP = 0.02 on js/ui/slider.js ***
         this.step = step;
-        params = params || {};
-
-        params.activate = false;
-
-        super(params);
 
         this.label = new St.Label({
             text: text || ""
