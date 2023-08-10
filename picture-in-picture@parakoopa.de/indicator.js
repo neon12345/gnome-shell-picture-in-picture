@@ -31,7 +31,7 @@ var WindowCornerIndicator = GObject.registerClass({
    }, class PictureInPicture_indicator extends PanelMenu.Button {
     
     constructor() {
-        super(null, "PictureInPicture.indicator");
+        super(null, "PictureInPicture_indicator");
     }
 
     // Handler to turn preview on / off
