@@ -1,7 +1,7 @@
 "use strict";
 
 // Global modules
-const Lang = imports.lang;
+const GObject = imports.gi.GObject;
 const Signals = imports.signals;
 
 // Internal modules
@@ -20,16 +20,16 @@ var SETTING_INITIAL_BOTTOM_CROP = "initial-bottom-crop";
 var SETTING_INITIAL_CORNER = "initial-corner";
 var SETTING_LAST_WINDOW_HASH = "last-window-hash";
 
-var PictureInPictureSettings = new Lang.Class({
-
-    Name: "PictureInPicture.settings",
-
-    _init: function() {
+var PictureInPictureSettings = GObject.registerClass({
+       GTypeName: 'PictureInPicture.settings',
+   }, class PictureInPicture.settings extends GObject.Object {
+    
+    constructor() {
         this._settings = Convenience.getSettings();
         this._settings.connect("changed", Lang.bind(this, this._onChanged));
     },
 
-    _onChanged: function(settings, key) {
+    _onChanged(settings, key) {
         // "my-property-name" => myPropertyName
         const property = key.replace(/-[a-z]/g, function (az) {
             return az.substr(1).toUpperCase();
