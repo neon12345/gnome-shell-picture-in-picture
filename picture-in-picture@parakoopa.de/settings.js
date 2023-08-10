@@ -24,6 +24,7 @@ var PictureInPictureSettings = GObject.registerClass({
    }, class PictureInPicture_settings extends GObject.Object {
     
     constructor() {
+        super();
         this._settings = Convenience.getSettings();
         this._settings.connect("changed", Lang.bind(this, this._onChanged));
     }
