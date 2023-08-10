@@ -61,7 +61,7 @@ var PictureInPicture = GObject.registerClass({
    }, class PictureInPicture_preview extends GObject.Object {
     
     constructor() {
-
+        super();
         this._corner = DEFAULT_CORNER;
         this._zoom = DEFAULT_ZOOM;
 
