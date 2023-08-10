@@ -9,6 +9,7 @@ var SignalConnector = GObject.registerClass({
    }, class PictureInPicture_SignalConnector extends GObject.Object {
     
     constructor() {
+        super();
         this._connections = [];
     }
 
