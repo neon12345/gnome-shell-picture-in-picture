@@ -607,8 +607,11 @@ var PictureInPicture = GObject.registerClass({
         this._container.connect("button-release-event", this._onClick.bind(this));
         this._container.connect("scroll-event", this._onScroll.bind(this));
 
-        this._container.visible = false;
-        Main.layoutManager.addChrome(this._container);
+        this._container.visible = false;    
+	Main.layoutManager.addTopChrome(this._container, {
+  	    affectsStruts: false,
+            trackFullscreen: false,
+	});
         Util.trySpawnCommandLine('sh -c "GDK_BACKEND=x11 gjs ' + extensionPath + '/dummy-window.js"');
 
         return;
