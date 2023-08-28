@@ -96,6 +96,7 @@ var WindowCornerIndicator = GObject.registerClass({
 
             // Populate window list on submenu
             workspace.windows.forEach(function(window) {
+                if(window.is_skip_taskbar()) return;
                 let winMenuItem = new PopupMenu.PopupMenuItem(spliceTitle(window.get_title()));
                 winMenuItem.connect("activate", (function() {
                     this.preview.window = window;
