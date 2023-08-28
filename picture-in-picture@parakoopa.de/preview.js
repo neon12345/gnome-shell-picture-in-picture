@@ -5,10 +5,12 @@ const GObject = imports.gi.GObject;
 const Main = imports.ui.main;
 const St = imports.gi.St;
 const Tweener = imports.tweener.tweener;
+const Util = imports.misc.util;
 const Clutter = imports.gi.Clutter;
 
 // Internal modules
 const ExtensionUtils = imports.misc.extensionUtils;
+const extensionPath = ExtensionUtils.getCurrentExtension().path;
 const Me = ExtensionUtils.getCurrentExtension();
 const Polygnome = Me.imports.polygnome;
 const Signaling = Me.imports.signaling;
@@ -607,6 +609,7 @@ var PictureInPicture = GObject.registerClass({
 
         this._container.visible = false;
         Main.layoutManager.addChrome(this._container);
+        Util.trySpawnCommandLine('sh -c "GDK_BACKEND=x11 gjs ' + extensionPath + '/dummy-window.js"');
 
         return;
         // isSwitchingWindow = false means user only changed window, but preview was on, so does not animate
@@ -623,6 +626,7 @@ var PictureInPicture = GObject.registerClass({
         if (! this._container) return;
 
         Main.layoutManager.removeChrome(this._container);
+        Util.trySpawnCommandLine('pkill -f "marcinjahn.com/dummy-window.js"');
         this._container.destroy();
         this._container = null;
     }
