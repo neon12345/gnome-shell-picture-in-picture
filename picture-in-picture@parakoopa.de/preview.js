@@ -629,7 +629,7 @@ var PictureInPicture = GObject.registerClass({
         if (! this._container) return;
 
         Main.layoutManager.removeChrome(this._container);
-        Util.trySpawnCommandLine('pkill -f "marcinjahn.com/dummy-window.js"');
+        Util.trySpawnCommandLine('pkill -f "picture-in-picture@parakoopa.de/dummy-window.js"');
         this._container.destroy();
         this._container = null;
     }
